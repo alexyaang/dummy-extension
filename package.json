@@ -22,7 +22,7 @@
     ],
     "taskDefinitions": [
       {
-        "type": "shell"
+        "type": "docker"
       }
     ]
   },

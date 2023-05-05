@@ -1,6 +1,6 @@
 import { CancellationToken, ProviderResult, ShellExecution, Task, TaskDefinition, TaskProvider, TaskScope, tasks, workspace } from 'vscode';
 
-export const type = 'dotnet-sdk';
+export const type = 'docker';
 
 export class DotnetTaskProvider implements TaskProvider {
 
@@ -25,7 +25,7 @@ export class DotnetTaskProvider implements TaskProvider {
 }
 
 function getShellCommand(definition: DotnetBuildTaskDefinition): string {
-    const configuration = definition.configuration ? `-c ${definition.configuration}` : '';
+    const configuration = definition.configuration ? `-c ${definition.configuration} ` : '';
     const publishFlag = definition.isWebApp ? '-p:PublishProfile=DefaultContainer' : '/t:PublishContainer';
     const sdkBuildCommand = `dotnet publish --os ${definition.os} --arch ${definition.arch} ${publishFlag} ${configuration}-p:ContainerImageName=${definition.imageName} -p:ContainerImageTag=${definition.imageTag}`;
     return sdkBuildCommand;
@@ -65,7 +65,7 @@ interface DotnetBuildTaskDefinition extends TaskDefinition {
 
 export const testTaskDefinition: DotnetBuildTaskDefinition = {
     type: type,
-    imageName: 'dotnetTest',
+    imageName: 'dotnettest',
     imageTag: 'latest',
     configuration: 'Debug',
     os: 'linux',
